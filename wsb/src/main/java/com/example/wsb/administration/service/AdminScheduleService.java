@@ -1,7 +1,7 @@
 package com.example.wsb.administration.service;
 
-import com.example.wsb.administration.model.SlotBatchRequest;
-import com.example.wsb.administration.model.SlotBatchResponse;
+import com.example.wsb.administration.model.request.SlotBatchRequest;
+import com.example.wsb.administration.model.response.SlotBatchResponse;
 import com.example.wsb.exception.NotFoundException;
 import com.example.wsb.model.entity.Day;
 import com.example.wsb.model.entity.SlotStatus;

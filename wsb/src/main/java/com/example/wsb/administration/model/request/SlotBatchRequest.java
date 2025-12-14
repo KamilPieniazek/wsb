@@ -1,4 +1,4 @@
-package com.example.wsb.administration.model;
+package com.example.wsb.administration.model.request;
 
 import lombok.*;
 

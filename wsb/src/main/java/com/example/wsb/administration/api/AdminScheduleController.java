@@ -1,7 +1,7 @@
 package com.example.wsb.administration.api;
 
-import com.example.wsb.administration.model.SlotBatchRequest;
-import com.example.wsb.administration.model.SlotBatchResponse;
+import com.example.wsb.administration.model.request.SlotBatchRequest;
+import com.example.wsb.administration.model.response.SlotBatchResponse;
 import com.example.wsb.administration.service.AdminScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;

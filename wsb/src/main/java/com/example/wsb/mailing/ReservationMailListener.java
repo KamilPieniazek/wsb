@@ -1,5 +1,6 @@
 package com.example.wsb.mailing;
 
+import com.example.wsb.mailing.model.AdminVisitCancellationEvent;
 import lombok.RequiredArgsConstructor;
 import com.example.wsb.mailing.model.VisitBookedEvent;
 import com.example.wsb.mailing.model.VisitCanceledEvent;
@@ -69,6 +70,36 @@ public class ReservationMailListener {
                   </body>
                 </html>
                 """.formatted(event.date(), event.time());
+
+        mailService.sendText(event.email(), "Booking cancellation", body);
+    }
+
+    @Async
+    @TransactionalEventListener
+    public void onVisitCanceledByAdmin(final AdminVisitCancellationEvent event) {
+
+        final String reasonHtml = (event.reason() == null || event.reason().isBlank())
+                ? ""
+                : """
+                <p>
+                  <strong>Reason:</strong> %s
+                </p>
+              """.formatted(event.reason());
+
+        final String body = """
+            <html>
+              <body>
+                <h2>Your visit has been canceled by the administrator.</h2>
+            
+                <p>
+                  <strong>Date:</strong> %s<br/>
+                  <strong>Time:</strong> %s
+                </p>
+            
+                %s
+              </body>
+            </html>
+            """.formatted(event.date(), event.time(), reasonHtml);
 
         mailService.sendText(event.email(), "Booking cancellation", body);
     }

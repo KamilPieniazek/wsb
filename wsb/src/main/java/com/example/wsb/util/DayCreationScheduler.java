@@ -29,9 +29,7 @@ public class DayCreationScheduler {
     private static final LocalTime BREAK_END = LocalTime.of(13, 0);
 
     private static final int SLOT_MINUTES = 30;
-//TODO Scheduler na polnoc i dodac jakies czyszczenie dni z przeszlosci
-    //@Scheduled(cron = "0 2 0 * * *", zone = "Europe/Warsaw")
-    @Scheduled(fixedDelay = 10_000)
+    @Scheduled(cron = "0 2 0 * * *", zone = "Europe/Warsaw")
     @Transactional
     public void createSchedule() {
         LocalDate today = LocalDate.now(ZONE);
