@@ -45,12 +45,6 @@ spring:
           starttls:
             enable: true
 
-logging:
-  level:
-    org.hibernate.SQL: DEBUG
-    org.springframework.security: DEBUG
-
-
 app:
   mail:
     from: ${APP_MAIL_FROM}
