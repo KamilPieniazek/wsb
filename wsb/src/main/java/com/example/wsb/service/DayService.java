@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -21,7 +22,7 @@ public class DayService {
     private final DayRepository dayRepository;
 
     @Transactional
-    public List<Day> findAll() { return dayRepository.findAll(); }
+    public List<Day> findAll() { return dayRepository.findAllByDateGreaterThanEqualOrderByDateAsc(LocalDate.now(ZoneId.of("Europe/Warsaw"))); }
 
     public Day getByDate(LocalDate date) {
         return dayRepository.findDayByDate(date)

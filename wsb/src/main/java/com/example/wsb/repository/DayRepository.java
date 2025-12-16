@@ -17,7 +17,7 @@ import java.util.UUID;
 @Repository
 public interface DayRepository extends JpaRepository<Day, UUID> {
     @EntityGraph(attributePaths = "slots")
-    List<Day> findAll();
+    List<Day> findAllByDateGreaterThanEqualOrderByDateAsc(LocalDate localDate);
 
     @EntityGraph(attributePaths = "slots")
     Optional<Day> findDayByDate(LocalDate date);
