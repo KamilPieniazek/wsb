@@ -17,6 +17,7 @@ public class ReservationMapper {
                 .id(day.getId())
                 .date(day.getDate())
                 .isFull(isFull(day))
+                .isBlocked(day.isBlocked())
                 .slots(
                         day.getSlots().stream()
                                 .map(this::toSlotResponse)

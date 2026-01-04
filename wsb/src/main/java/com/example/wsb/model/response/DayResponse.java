@@ -16,5 +16,6 @@ public class DayResponse {
     private UUID id;
     private LocalDate date;
     private boolean isFull;
+    private boolean isBlocked;
     private List<SlotResponse> slots;
 }
