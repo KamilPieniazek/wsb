@@ -5,10 +5,8 @@ import com.example.wsb.administration.model.response.AdminDayResponse;
 import com.example.wsb.exception.BadRequestException;
 import com.example.wsb.exception.NotFoundException;
 import com.example.wsb.mailing.model.AdminVisitCancellationEvent;
-import com.example.wsb.model.entity.SlotStatus;
-import com.example.wsb.model.entity.TimeSlot;
-import com.example.wsb.model.entity.Visit;
-import com.example.wsb.model.entity.VisitStatus;
+import com.example.wsb.model.entity.*;
+import com.example.wsb.repository.DayRepository;
 import com.example.wsb.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,23 +24,39 @@ import java.util.UUID;
 public class AdminVisitService {
 
     private final VisitRepository visitRepository;
+    private final DayRepository dayRepository;
     private final ApplicationEventPublisher publisher;
 
     @Transactional(readOnly = true)
-    public List<AdminDayResponse> getReservedVisitsForDay(LocalDate date) {
-        return visitRepository.findByDayAndStatus(date, VisitStatus.CONFIRMED)
-                .stream()
-                .map(visit -> {
-                    var slot = visit.getSlot();
-                    var day = slot.getDay();
-                    var customer = visit.getCustomer();
+    public List<AdminDayResponse> getSchedule(LocalDate date) {
+
+        Day day = dayRepository.findDayByDate(date)
+                .orElseThrow(() -> new NotFoundException("Day not found: " + date));
+
+        var confirmedVisits = visitRepository.findByDayAndStatus(date, VisitStatus.CONFIRMED);
+
+        var bySlotId = confirmedVisits.stream()
+                .collect(java.util.stream.Collectors.toMap(
+                        v -> v.getSlot().getId(),
+                        v -> v
+                ));
+
+        return day.getSlots().stream()
+                .map(slot -> {
+                    var visit = bySlotId.get(slot.getId());
+                    var customer = (visit != null) ? visit.getCustomer() : null;
 
                     return new AdminDayResponse(
-                            visit.getId(),
-                            slot.getId(),
+                            day.getId(),
                             day.getDate(),
+                            slot.getId(),
                             slot.getStartTime(),
-                            visit.getVisitType(),
+                            slot.getStatus(),
+
+                            visit != null ? visit.getId() : null,
+                            visit != null ? visit.getVisitType() : null,
+                            visit != null ? visit.getStatus() : null,
+
                             customer != null ? customer.getFirstName() : null,
                             customer != null ? customer.getLastName() : null,
                             customer != null ? customer.getPhoneNumber() : null,

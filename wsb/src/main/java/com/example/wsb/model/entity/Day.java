@@ -26,6 +26,9 @@ public class Day {
     @Column(nullable = false)
     private LocalDate date;
 
+    @Column(nullable = false)
+    private boolean blocked = false;
+
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("startTime ASC")
     @Builder.Default

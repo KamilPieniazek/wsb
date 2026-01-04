@@ -31,6 +31,8 @@ public class AdminScheduleService {
         Day day = dayRepository.findByDateForUpdate(date)
                 .orElseThrow(() -> new NotFoundException("Day not found: " + date));
 
+        day.setBlocked(true);
+
         for (TimeSlot slot : day.getSlots()) {
             if (slot.getStatus() == SlotStatus.AVAILABLE) {
                 slot.setStatus(SlotStatus.BLOCKED);
@@ -42,6 +44,8 @@ public class AdminScheduleService {
     public void openDay(LocalDate date) {
         Day day = dayRepository.findByDateForUpdate(date)
                 .orElseThrow(() -> new NotFoundException("Day not found: " + date));
+
+        day.setBlocked(false);
 
         for (TimeSlot slot : day.getSlots()) {
             if (slot.getStatus() == SlotStatus.BLOCKED) {

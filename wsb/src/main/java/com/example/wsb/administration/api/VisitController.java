@@ -26,7 +26,7 @@ public class VisitController {
     public ResponseEntity<List<AdminDayResponse>> getReservedVisitsForDay(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     ) {
-        return ResponseEntity.ok(visitService.getReservedVisitsForDay(date));
+        return ResponseEntity.ok(visitService.getSchedule(date));
     }
 
     @PatchMapping("/{visitId}/cancel")
