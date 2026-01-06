@@ -23,7 +23,7 @@ public class ReservationMailListener {
     @TransactionalEventListener
     public void onVisitBooked(final VisitBookedEvent event) {
         String cancelLink = String.format(
-                "%s/api/public/cancel/%s?token=%s",
+                "%s/cancel/%s?token=%s",
                 baseUrl, event.visitId(), event.cancelToken()
         );
 
