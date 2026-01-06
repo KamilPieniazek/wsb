@@ -126,13 +126,11 @@ public class AdminScheduleService {
         LocalTime from = request.getFrom();
         LocalTime to = request.getTo();
         if (from == null || to == null) return List.of();
-        if (!from.isBefore(to)) return List.of();
+        if (to.isBefore(from)) return List.of();
 
         List<LocalTime> response = new ArrayList<>();
-        LocalTime cur = from;
-        while (cur.isBefore(to)) {
+        for (LocalTime cur = from; !cur.isAfter(to); cur = cur.plusMinutes(30)) {
             response.add(cur);
-            cur = cur.plusMinutes(30);
         }
         return response;
     }
